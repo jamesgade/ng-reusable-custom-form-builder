@@ -1,0 +1,27 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <ng-container *ngFor="let field of fields">
+        <div>
+            <label>{{field.label}}</label>
+
+            <!-- input type = text, email, password -->
+            <input [formControlName]="field.name" [type]="field.type"
+                *ngIf="field.type === 'text' || field.type === 'email' || field.type === 'password'">
+
+            <!-- textarea -->
+            <textarea [formControlName]="field.name" *ngIf="field.type === 'textarea'"></textarea>
+
+            <!-- select dropdown -->
+            <select [formControlName]="field.name" *ngIf="field.type === 'select'">
+                <option *ngFor="let option of field.options" [value]="option.value">{{ option.label }}</option>
+            </select>
+            <!-- <div *ngIf="field.name.invalid && field.name.touched">
+            {{getErrorMessage(field)}}
+            </div> -->
+
+            <!-- validations -->
+            <div *ngIf="!form.controls[field.name]?.valid && form.controls[field.name]?.touched">
+                {{getErrorMessage(field)}}</div>
+        </div>
+    </ng-container>
+    <button type="submit">Submit</button>
+</form>
